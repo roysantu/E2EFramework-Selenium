@@ -1,6 +1,8 @@
 package testSuites;
 
 import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 import pageObjects.NavigationPage;
 import resources.FrameworkBase;
@@ -24,6 +26,7 @@ public class GreenCartHomeTest extends FrameworkBase {
 		super();
 	}
 	
+
 	@BeforeTest
 	public void testSetup() {
 
@@ -42,19 +45,23 @@ public class GreenCartHomeTest extends FrameworkBase {
 		driver.quit();
 	}
 		
-	@Test
+	@Test(enabled = false)
 	public void testMetaData() {	
 		String pageTitle = driver.getTitle();
 		System.out.println(pageTitle);
 	}
 	
-	@Test(dependsOnMethods = {"testMetaData"})
+	@Test()
 	public void verifyHeaderSection() {
-		Assert.assertTrue(greenCartHomePage.verifyLogoExists());
-		Assert.assertTrue(greenCartHomePage.verifyLogoText());
+		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoExists());
+		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoText());
+		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(0), "margin-left: -121px;");
+		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(1), "-121px");
+		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(2), "0.3s linear 0s 1 normal none running slideUp");
+		greenCartHomePage.verifySmallCartInitialState();
 	}
 	
-	@Test(dependsOnMethods = {"testMetaData", "verifyHeaderSection"})
+	@Test(dependsOnMethods = {"testMetaData", "verifyHeaderSection"}, enabled = false)
 	public void verifyProductSection() {
 		
 		// TODO update product test including pseudo elements
