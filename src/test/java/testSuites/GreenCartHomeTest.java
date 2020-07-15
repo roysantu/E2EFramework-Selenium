@@ -1,6 +1,8 @@
 package testSuites;
 
 import org.testng.annotations.Test;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.AssertJUnit;
 import resources.FrameworkBase;
 import pageObjects.GreenCartHomePage;
@@ -11,6 +13,7 @@ import org.testng.annotations.BeforeTest;
 
 public class GreenCartHomeTest extends FrameworkBase {
 	GreenCartHomePage greenCartHomePage;
+	Actions actions;
 	
 	public GreenCartHomeTest() {
 		super();
@@ -24,24 +27,26 @@ public class GreenCartHomeTest extends FrameworkBase {
 	@BeforeMethod
 	public void testCaseSetup() {
 		initializeDriver();
+		actions = new Actions(driver);
 		greenCartHomePage = new GreenCartHomePage();
 		driver.get(prop.getProperty("greenCartURL"));
 	}
 	
 	@AfterMethod
-	public void testEnd() throws InterruptedException {
+	public void testMethodEnd() throws InterruptedException {
 		Thread.sleep(3000);
+		// TODO Take Screenshot
 		driver.close();
 		driver.quit();
 	}
 		
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testMetaData() {	
 		String pageTitle = driver.getTitle();
 		System.out.println(pageTitle);
 	}
 	
-	@Test(dependsOnMethods = {"testMetaData"}, enabled = true)
+	@Test(dependsOnMethods = {"testMetaData"}, enabled = false)
 	public void verifyHeaderSection() {
 		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoExists());
 		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoText());
@@ -50,11 +55,20 @@ public class GreenCartHomeTest extends FrameworkBase {
 		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(2), "0.3s linear 0s 1 normal none running slideUp");
 		greenCartHomePage.verifySmallCartInitialState();
 	}
+	// (dependsOnMethods = {"testMetaData", "verifyHeaderSection"}, enabled = true)
 	
-	@Test(dependsOnMethods = {"testMetaData", "verifyHeaderSection"}, enabled = false)
+	@Test
 	public void verifyProductSection() {
-		
+		Assert.assertEquals(31, greenCartHomePage.verifyProductCount());
 		// TODO update product test including pseudo elements
+		System.out.println(greenCartHomePage.getProductByIndex(1).getText());
+		System.out.println(greenCartHomePage.getProductCardByName("Walnuts").getText());
+		actions.moveToElement(greenCartHomePage.getProductCardByName("Walnuts"));
+		
+		Assert.assertEquals
+		(greenCartHomePage.getProductDetails(greenCartHomePage.getProductCardByName("Walnuts"), "product-name"), 
+				"Walnuts - 1/4 Kg");
+		
 	}
 
 }
