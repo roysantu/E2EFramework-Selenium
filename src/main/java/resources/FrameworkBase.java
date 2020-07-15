@@ -45,12 +45,10 @@ public class FrameworkBase {
 			System.setProperty("webdriver.chrome.driver", prop.getProperty("safariDriverPath"));
 			driver = new ChromeDriver();
 		}
-		
+
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		// return driver;
-		driver.get(prop.getProperty("url"));
 		
 	}
 
