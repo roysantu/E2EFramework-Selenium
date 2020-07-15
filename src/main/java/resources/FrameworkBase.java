@@ -18,9 +18,8 @@ public class FrameworkBase {
 
 		try {
 			prop = new Properties();
-			FileInputStream fis = new FileInputStream("/Users/santuroy/Documents/newWorkspace/E2EFramework"
-					+ "/src/main/java/resources/data.properties");
-			prop.load(fis);
+			FileInputStream fis = new FileInputStream("C:\\CodeRepository\\E2EFramework-Selenium\\src\\main\\java\\resources\\data.properties");
+			prop.load(fis); // Read data from Property file
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();	
