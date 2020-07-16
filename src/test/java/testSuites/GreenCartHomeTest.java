@@ -62,7 +62,7 @@ public class GreenCartHomeTest extends FrameworkBase {
 	}
 	// (dependsOnMethods = {"testMetaData", "verifyHeaderSection"}, enabled = true)
 	
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void verifyProductSection() {
 		// Verify product count
 		Assert.assertEquals(31, greenCartHomePage.verifyProductCount());
@@ -84,11 +84,13 @@ public class GreenCartHomeTest extends FrameworkBase {
 		}
 	}
 	
-	@Test(enabled = false)
-	public void verifyProductCanBeAddedToCart() {
-		
-		// TODO update product test including pseudo elements
 
+	@Test(enabled = true)
+	public void verifyProductCanBeAddedToCart() {
+		greenCartHomePage.addProductToCartByIndex(1);
+		greenCartHomePage.verifyCartPreviewForItemAdded(greenCartHomePage.getProductByIndex(1));
+		// TODO update rest of the validations
+		
 	}
 
 }

@@ -1,5 +1,7 @@
 package pageObjects;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 
@@ -40,6 +44,17 @@ public class GreenCartHomePage extends FrameworkBase{
 	
 	@FindBy(xpath = ".//div[@class='cart-info']/table/tbody/tr[2]/td[3]")
 	WebElement smallCartItemPrice;
+	
+	@FindBy(xpath = "//a[@class='cart-icon']")
+	static WebElement cartPreviewIcon;
+	
+	@FindBy(css = "div.cart-preview.active")
+	WebElement cartPreview;
+	
+	@FindAll({
+		@FindBy(css = "div.cart-preview.active li")
+	})
+	public List<WebElement> cartPreviewItemLists;
 	
 	// Product list
 	@FindAll({
@@ -152,20 +167,52 @@ public class GreenCartHomePage extends FrameworkBase{
 		} else if (productProperty.equals("quantity")) {
 			return newProductCard.quantity;
 		} else if (productProperty.equals("buttonText")) {
-			// TODO How to add different Return Datatype
+			// TODO How to add different Return Data type
 			return newProductCard.addToCart.getText();
 		} else {
 			return "Not a valid Property Name. Use : src, alt, product-name, product-price, quantity, buttonText";
 		}
 	}
 	
-	public WebElement getProductAddButton(WebElement elem, String productProperty) {
+	private WebElement getProductAddButton(WebElement elem) {
 		ProductCard newProductCard = this.getProductCardObj(elem);
-		if (productProperty.equals("button")) {
+		if (elem.isDisplayed()) {
 			return newProductCard.addToCart;
 		} else {
 			return null;
 		}
+	}
+	
+	public void addProductToCartByIndex(int index) {
+		WebElement productCard = this.getProductByIndex(index);
+		WebElement ProductAddToCartButton = getProductAddButton(productCard);
+		ProductAddToCartButton.click();
+	}
+	
+	public void verifyCartPreviewForItemAdded(WebElement elem) {
+		ProductCard newProductCard = this.getProductCardObj(elem);
+		verifyElementIsDisplayed(cartPreviewIcon);
+		cartPreviewIcon.click();
+		// Explicit Wait 
+		WebDriverWait wait = new WebDriverWait(driver, 1000);
+		wait.until(ExpectedConditions.visibilityOf(this.cartPreview)); 
+		
+		WebElement lastProductAdded = this.cartPreviewItemLists.get(this.cartPreviewItemLists.size()-1);
+		// Verify Image Link is valid for the Item
+		String imageUrl = lastProductAdded.findElement(By.cssSelector("img.product-image")).getAttribute("src");
+		try {
+			this.verifyLinkUrl(imageUrl);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Verify product details Section
+		String productDetails = lastProductAdded.findElement(By.cssSelector("div.product-info p")).getText();
+		assertTrue(productDetails.equals(newProductCard.productName), "Product Description matched");
+		// Verify product Price
+		String productPrice = lastProductAdded.findElement(By.cssSelector("div.product-info p.product-price")).getText();
+		Assert.assertEquals(productPrice, newProductCard.productPrice, "Product price matched");
+		// TODO Add other validations for last product added
 	}
 	
 	// Generic Methods // TODO move to utilities when it feels safe
@@ -196,5 +243,9 @@ public class GreenCartHomePage extends FrameworkBase{
 	
 	}
 	
+	private static void verifyElementIsDisplayed(WebElement elem) {
+		
+		elem.isDisplayed();
+	}
 
 }
