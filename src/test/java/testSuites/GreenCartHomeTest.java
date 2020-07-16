@@ -1,6 +1,11 @@
 package testSuites;
 
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
+
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.AssertJUnit;
@@ -57,18 +62,33 @@ public class GreenCartHomeTest extends FrameworkBase {
 	}
 	// (dependsOnMethods = {"testMetaData", "verifyHeaderSection"}, enabled = true)
 	
-	@Test
+	@Test(enabled = true)
 	public void verifyProductSection() {
+		// Verify product count
 		Assert.assertEquals(31, greenCartHomePage.verifyProductCount());
-		// TODO update product test including pseudo elements
-		System.out.println(greenCartHomePage.getProductByIndex(1).getText());
-		System.out.println(greenCartHomePage.getProductCardByName("Walnuts").getText());
+		// Select Dynamic products based on Index or any attribute using Parent xpath
+		String firstProductText = greenCartHomePage.getProductByIndex(0).getText();
+		assertTrue(firstProductText.contains("Brocolli"), "First Product matched!!!");;
 		actions.moveToElement(greenCartHomePage.getProductCardByName("Walnuts"));
-		
 		Assert.assertEquals
 		(greenCartHomePage.getProductDetails(greenCartHomePage.getProductCardByName("Walnuts"), "product-name"), 
 				"Walnuts - 1/4 Kg");
+		// Verify product currency pseudo elements "₹"
+		assertTrue(greenCartHomePage.getPseudoStyleOfIndex(0).contains("₹"));
+		// Verify all images
+		try {
+			greenCartHomePage.verifyIfImageIfBroken(greenCartHomePage.allProductImages);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test(enabled = false)
+	public void verifyProductCanBeAddedToCart() {
 		
+		// TODO update product test including pseudo elements
+
 	}
 
 }

@@ -1,14 +1,19 @@
 package pageObjects;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+
 
 import resources.FrameworkBase;
 
@@ -45,12 +50,18 @@ public class GreenCartHomePage extends FrameworkBase{
 	@FindBy(className = "products")
 	WebElement productContainer;
 	
+	@FindAll({
+		@FindBy(css = "div.product-image img") 
+	})
+	public List<WebElement> allProductImages;
+	
+	
 	// Constructor
 	public GreenCartHomePage() {
 		PageFactory.initElements(driver, this);
 	}
 	
-	// Methods
+	// Methods for Header section
 	public boolean verifyLogoExists() { 
 		return pageNameLogo.isDisplayed();
 	}
@@ -80,6 +91,7 @@ public class GreenCartHomePage extends FrameworkBase{
 		
 	}
 	
+	// Methods for Product lists
 	public int verifyProductCount() {
 		int actualProductCount;
 		actualProductCount= allProducts.size();
@@ -104,9 +116,27 @@ public class GreenCartHomePage extends FrameworkBase{
 		String productPrice = productCardElement.findElement(By.className("product-price")).getText();
 		String quantity = productCardElement.findElement(By.className("quantity")).getText();
 		WebElement addToCart = productCardElement.findElement(By.tagName("button"));
-
+		
 		ProductCard productCard = new ProductCard(imgSrc, imgAlt, productName, productPrice, quantity, addToCart);
 		return productCard;
+	}
+	
+	public String getPseudoStyleOfIndex(int index) {
+		// Pseudo Element ::before
+		String script = 
+		"return window.getComputedStyle(document.querySelectorAll('p.product-price')[" + 
+		String.valueOf(index) + 
+		"],':before').getPropertyValue('content')";
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String productCurrency = (String) js.executeScript(script);
+		return productCurrency;
 	}
 	
 	public String getProductDetails(WebElement elem, String productProperty) {
@@ -121,21 +151,50 @@ public class GreenCartHomePage extends FrameworkBase{
 			return newProductCard.productPrice;
 		} else if (productProperty.equals("quantity")) {
 			return newProductCard.quantity;
-		} else if (productProperty.equals("button")) {
+		} else if (productProperty.equals("buttonText")) {
 			// TODO How to add different Return Datatype
-			return "Button";
+			return newProductCard.addToCart.getText();
 		} else {
-			return "Not a valid Property Name. Use : src, alt, product-name, product-price, quantity, button";
+			return "Not a valid Property Name. Use : src, alt, product-name, product-price, quantity, buttonText";
 		}
-		
-		
 	}
 	
-	public void verifyIfImageBroken() {
-		// TODO update Code using HTTPRequest
+	public WebElement getProductAddButton(WebElement elem, String productProperty) {
+		ProductCard newProductCard = this.getProductCardObj(elem);
+		if (productProperty.equals("button")) {
+			return newProductCard.addToCart;
+		} else {
+			return null;
+		}
 	}
 	
-	public void verifyIfLinkBroken() {
-		// TODO update Code using HTTPRequest
+	// Generic Methods // TODO move to utilities when it feels safe
+	public void verifyIfImageIfBroken(List<WebElement> elems) throws IOException {
+		for(int i=0; i<elems.size(); i++) {
+			this.verifyLinkUrl(elems.get(i).getAttribute("src"));
+		}
 	}
+	
+	public void verifyIfLinkIfBroken(List<WebElement> elems) throws IOException {
+		for(int i=0; i<elems.size(); i++) {
+			this.verifyLinkUrl(elems.get(i).getAttribute("href")); // TODO Not Implemented in test but should work smooth
+		}
+	}
+	
+	private void verifyLinkUrl(String url) throws IOException {
+		// TODO update Code using HTTPRequest
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		con.setRequestMethod("GET");
+		
+		if (String.valueOf(con.getResponseCode()).equals("200")){
+			
+		}
+		else {
+			System.out.println("Image @ url " + url + " does not exists at server");
+		}
+	
+	}
+	
+
 }
