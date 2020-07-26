@@ -2,6 +2,8 @@ package testSuites;
 
 import org.testng.annotations.Test;
 
+import pageObjects.greencart.GreenCartHomePage;
+
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -10,7 +12,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.AssertJUnit;
 import resources.FrameworkBase;
-import pageObjects.GreenCartHomePage;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -45,13 +46,13 @@ public class GreenCartHomeTest extends FrameworkBase {
 		driver.quit();
 	}
 		
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void testMetaData() {	
 		String pageTitle = driver.getTitle();
 		System.out.println(pageTitle);
 	}
 	
-	@Test(dependsOnMethods = {"testMetaData"}, enabled = false)
+	@Test(dependsOnMethods = {"testMetaData"}, enabled = true)
 	public void verifyHeaderSection() {
 		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoExists());
 		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoText());
@@ -62,7 +63,7 @@ public class GreenCartHomeTest extends FrameworkBase {
 	}
 	// (dependsOnMethods = {"testMetaData", "verifyHeaderSection"}, enabled = true)
 	
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void verifyProductSection() {
 		// Verify product count
 		Assert.assertEquals(31, greenCartHomePage.verifyProductCount());

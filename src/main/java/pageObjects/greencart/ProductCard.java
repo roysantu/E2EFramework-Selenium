@@ -1,4 +1,4 @@
-package pageObjects;
+package pageObjects.greencart;
 
 import org.openqa.selenium.WebElement;
 

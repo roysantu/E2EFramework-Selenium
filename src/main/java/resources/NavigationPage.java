@@ -1,6 +1,6 @@
-package pageObjects;
+package resources;
 
-import resources.FrameworkBase;
+import pageObjects.greencart.GreenCartHomePage;
 
 public class NavigationPage extends FrameworkBase {
 	GreenCartHomePage greenCartHomePage;

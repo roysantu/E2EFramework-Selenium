@@ -1,4 +1,4 @@
-package pageObjects;
+package pageObjects.greencart;
 
 import static org.testng.Assert.assertTrue;
 
@@ -201,7 +201,7 @@ public class GreenCartHomePage extends FrameworkBase{
 		// Verify Image Link is valid for the Item
 		String imageUrl = lastProductAdded.findElement(By.cssSelector("img.product-image")).getAttribute("src");
 		try {
-			this.verifyLinkUrl(imageUrl);
+			this.verifyUrl(imageUrl);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -218,17 +218,17 @@ public class GreenCartHomePage extends FrameworkBase{
 	// Generic Methods // TODO move to utilities when it feels safe
 	public void verifyIfImageIfBroken(List<WebElement> elems) throws IOException {
 		for(int i=0; i<elems.size(); i++) {
-			this.verifyLinkUrl(elems.get(i).getAttribute("src"));
+			this.verifyUrl(elems.get(i).getAttribute("src"));
 		}
 	}
 	
 	public void verifyIfLinkIfBroken(List<WebElement> elems) throws IOException {
 		for(int i=0; i<elems.size(); i++) {
-			this.verifyLinkUrl(elems.get(i).getAttribute("href")); // TODO Not Implemented in test but should work smooth
+			this.verifyUrl(elems.get(i).getAttribute("href")); // TODO Not Implemented in test but should work smooth
 		}
 	}
 	
-	private void verifyLinkUrl(String url) throws IOException {
+	private void verifyUrl(String url) throws IOException {
 		// TODO update Code using HTTPRequest
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
