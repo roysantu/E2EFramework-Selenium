@@ -7,6 +7,7 @@ import pageObjects.greencart.GreenCartHomePage;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -32,7 +33,12 @@ public class GreenCartHomeTest extends FrameworkBase {
 	
 	@BeforeMethod
 	public void testCaseSetup() {
-		initializeDriver();
+		try {
+			initializeDriver();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		actions = new Actions(driver);
 		greenCartHomePage = new GreenCartHomePage();
 		driver.get(prop.getProperty("greenCartURL"));
