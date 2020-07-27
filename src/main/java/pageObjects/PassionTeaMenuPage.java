@@ -1,20 +1,24 @@
 package pageObjects;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import resources.FrameworkBase;
 
 public class PassionTeaMenuPage extends FrameworkBase {
 
 	@FindBy(id = "wsb-element-00000000-0000-0000-0000-000450914921")
-	WebElement headerMenu;
+	public WebElement headerMenu;
 
 	@FindBy(className = "wsb-image-inner")
 	WebElement pageLogoPic;
 	
-	@FindBy(xpath = "*[@id=\"wsb-element-00000000-0000-0000-0000-000450914873\"]/div/div/a/img")
+	@FindBy(xpath = "//div[@class='img']/a")
 	WebElement mainPageLinkinLogo;
 
 	@FindBy(linkText = "welcome.html")
@@ -35,6 +39,7 @@ public class PassionTeaMenuPage extends FrameworkBase {
 		// Methods
 		public boolean verifyLogoExists() { 
 			return pageLogoPic.isDisplayed();
+			
 		}
 		
 		public boolean verifyLogo() { 
@@ -45,5 +50,19 @@ public class PassionTeaMenuPage extends FrameworkBase {
 			}
 		}
 	
-	
+		public void clickOnLogo() {	
+			
+			String script = "document.querySelector('div.img a').click();";
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+	        js.executeScript(script);
+	          			
+			System.out.println("Clicked");
+			
+			String ActualTitle = driver.getTitle();
+			String ExpectedTitle = "Welcome";
+			Assert.assertEquals(ActualTitle, ExpectedTitle);
+			System.out.println("Welcome Page Navigation is successful");
+					
+			
+		}
 }

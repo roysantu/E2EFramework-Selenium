@@ -2,7 +2,8 @@ package testSuites;
 
 import org.testng.annotations.Test;
 import org.openqa.selenium.support.Color;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -21,23 +22,23 @@ public class PassionTeaMenuTest extends FrameworkBase {
 		super();
 }
 	
-	@Test
 	@BeforeTest
 	public void testSetup() {
 		
 	}
 	
-	@Test
 	@BeforeMethod
 	public void testCaseSetup() {
 		initializeDriver();
 		actions = new Actions(driver);
 		passionTeaMenuPage = new PassionTeaMenuPage();
 		driver.get(prop.getProperty("PassionTea"));
+	
+		WebDriverWait wait = new WebDriverWait(driver, 5000);
+		wait.until(ExpectedConditions.elementToBeClickable(passionTeaMenuPage.headerMenu));
 		System.out.println("Page opened");
 	}
 	
-	@Test
 	@AfterMethod
 	public void testMethodEnd() throws InterruptedException {
 		Thread.sleep(3000);
@@ -46,12 +47,12 @@ public class PassionTeaMenuTest extends FrameworkBase {
 		driver.quit();
 	}
 	
-	@Test(enabled = false)
+/*	@Test(enabled = false)
 	public void checkPageTitle() {	
 		String pageTitle = driver.getTitle();
 		System.out.println(pageTitle);
 }
-	
+*/	
 	@Test
 	public void checkGreenTeaText() {	
 		String greenTeaText = driver.findElement(By.id("wsb-element-00000000-0000-0000-0000-000451934628")).getText();
@@ -76,7 +77,13 @@ public class PassionTeaMenuTest extends FrameworkBase {
 		else
 		System.out.println("Text color is NOT Red"); 	
 			
-	}
+	} 
 	
+	@Test
+	public void verifyLogoClickWorks() {
+		passionTeaMenuPage.clickOnLogo();
+		System.out.println("Click on Logo navigates to Welcome Page"); 	
+		
+	}
 	
 }
