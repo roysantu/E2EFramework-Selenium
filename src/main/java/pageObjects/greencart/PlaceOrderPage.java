@@ -1,4 +1,4 @@
-package pageObjects;
+package pageObjects.greencart;
 
 public class PlaceOrderPage {
 
