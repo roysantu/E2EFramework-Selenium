@@ -43,12 +43,21 @@ public class FrameworkBase {
 			driver = new ChromeDriver();
 			
 		} else if(browserName.equals("firefox")) {
+			// TODO add correct driver details for firefox
 			System.setProperty("webdriver.chrome.driver", prop.getProperty("geckoDriverPath"));
 			driver = new ChromeDriver();
 			
 		} else if(browserName.equals("safari")) {
+			// TODO add correct driver details for Safari
 			System.setProperty("webdriver.chrome.driver", prop.getProperty("safariDriverPath"));
 			driver = new ChromeDriver();
+			
+		} else if(browserName.equals("IE")) {
+			// TODO add correct driver details for IE
+			System.setProperty("webdriver.chrome.driver", prop.getProperty("iePath"));
+			driver = new ChromeDriver();
+			
+			// TODO add headless driver capabilities
 		}
 
 		driver.manage().window().maximize();

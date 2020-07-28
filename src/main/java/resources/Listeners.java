@@ -28,7 +28,7 @@ public class Listeners extends FrameworkBase implements ITestListener{
 		// TODO Auto-generated method stub
 		// Get driver from failed test method
 		try {
-			driver = (WebDriver) result.getTestClass().getRealClass().getDeclaredField("driver").get(result.getInstance());
+			driver = (WebDriver) result.getTestClass().getRealClass().getField("driver").get(result.getInstance());
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
