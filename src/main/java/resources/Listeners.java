@@ -7,25 +7,35 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+
 
 public class Listeners extends FrameworkBase implements ITestListener{
 	WebDriver driver;
+	// Reporters
+	ExtentReports testReport = ExtentReporter.getReportObject();
+	ExtentTest testMethodReport;
 	
 	@Override
 	public void onTestStart(ITestResult result) {
 		// TODO Auto-generated method stub
-
+		testMethodReport = testReport.createTest(result.getMethod().getMethodName());
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		// TODO Auto-generated method stub
-	
+		testMethodReport.log(Status.PASS, result.getMethod().getMethodName() + " : Test Succeed");
 	}
 
 	@Override
 	public void onTestFailure(ITestResult result) {
 		// TODO Auto-generated method stub
+		testMethodReport.log(Status.FAIL, result.getMethod().getMethodName() + " : Test Failed");
+		testMethodReport.fail(result.getThrowable());
+		
 		// Get driver from failed test method
 		try {
 			driver = (WebDriver) result.getTestClass().getRealClass().getField("driver").get(result.getInstance());
@@ -71,7 +81,7 @@ public class Listeners extends FrameworkBase implements ITestListener{
 	@Override
 	public void onFinish(ITestContext context) {
 		// TODO Auto-generated method stub
-
+		testReport.flush();
 	}
 
 
