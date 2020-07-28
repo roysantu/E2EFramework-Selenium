@@ -56,7 +56,7 @@ public class GreenCartHomeTest extends FrameworkBase {
 	public void verifyHeaderSection() {
 		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoExists());
 		AssertJUnit.assertTrue(greenCartHomePage.verifyLogoText());
-		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(0), "margin-left: -121px;");
+		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(0), "margin-left: -121pxQ;");
 		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(1), "-121px");
 		AssertJUnit.assertEquals(greenCartHomePage.verifyHeaderSectionStyle().get(2), "0.3s linear 0s 1 normal none running slideUp");
 		greenCartHomePage.verifySmallCartInitialState();
