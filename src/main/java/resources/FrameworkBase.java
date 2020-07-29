@@ -66,12 +66,13 @@ public class FrameworkBase {
 		
 	}
 	
-	public void getScreenshot(String testMethodName, WebDriver driver) throws IOException {
+	public String getScreenshot(String testMethodName, WebDriver driver) throws IOException {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		File source = ts.getScreenshotAs(OutputType.FILE);
 		String destinationFile = System.getProperty("user.dir") + "/reports/screenshots/" + testMethodName + ".png";
 		FileUtils.copyFile(source, new File(destinationFile));
 		
+		return destinationFile;
 	}
 
 }

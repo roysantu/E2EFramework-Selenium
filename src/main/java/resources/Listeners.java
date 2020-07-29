@@ -17,24 +17,28 @@ public class Listeners extends FrameworkBase implements ITestListener{
 	// Reporters
 	ExtentReports testReport = ExtentReporter.getReportObject();
 	ExtentTest testMethodReport;
+	// JAVA Thread safe for parallel testing
+	ThreadLocal<ExtentTest> extentTestThread = new ThreadLocal<ExtentTest>();
 	
 	@Override
 	public void onTestStart(ITestResult result) {
 		// TODO Auto-generated method stub
 		testMethodReport = testReport.createTest(result.getMethod().getMethodName());
+		extentTestThread.set(testMethodReport);
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		// TODO Auto-generated method stub
-		testMethodReport.log(Status.PASS, result.getMethod().getMethodName() + " : Test Succeed");
+		extentTestThread.get().log(Status.PASS, result.getMethod().getMethodName() + " : Test Succeed");
 	}
 
 	@Override
 	public void onTestFailure(ITestResult result) {
 		// TODO Auto-generated method stub
-		testMethodReport.log(Status.FAIL, result.getMethod().getMethodName() + " : Test Failed");
-		testMethodReport.fail(result.getThrowable());
+		String methodName = result.getMethod().getMethodName();
+		extentTestThread.get().log(Status.FAIL, methodName + " : Test Failed");
+		extentTestThread.get().fail(result.getThrowable());
 		
 		// Get driver from failed test method
 		try {
@@ -46,7 +50,8 @@ public class Listeners extends FrameworkBase implements ITestListener{
 		
 		//Take Screenshot
 		try {
-			getScreenshot(result.getMethod().getMethodName(), driver);
+			extentTestThread.get().addScreenCaptureFromPath(getScreenshot(methodName, driver));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
