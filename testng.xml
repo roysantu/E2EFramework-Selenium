@@ -5,6 +5,7 @@
     <classes>
       <class name="testSuites.GreenCartHomeTest"/>
       <class name="testSuites.PassionTeaMenuTest"/>
+      <class name="testSuites.PHPTravelsTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

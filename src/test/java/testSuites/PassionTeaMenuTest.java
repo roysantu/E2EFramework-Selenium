@@ -36,7 +36,7 @@ public class PassionTeaMenuTest extends FrameworkBase {
 	
 		WebDriverWait wait = new WebDriverWait(driver, 5000);
 		wait.until(ExpectedConditions.elementToBeClickable(passionTeaMenuPage.headerMenu));
-		System.out.println("Page opened");
+		//System.out.println("Page opened");
 	}
 	
 	@AfterMethod
@@ -84,6 +84,42 @@ public class PassionTeaMenuTest extends FrameworkBase {
 		passionTeaMenuPage.clickOnLogo();
 		System.out.println("Click on Logo navigates to Welcome Page"); 	
 		
+	}
+	
+	@Test
+	public void verifyCheckoutButton() {
+		passionTeaMenuPage.checkoutButtonFunc();
+		System.out.println("Check Out page is opened"); 	
+		
+	}
+	@Test
+	public void verifyOolongTeaHeader() {
+		String color = passionTeaMenuPage.verifyOolongTeaHeaderStyle().get(0);
+		System.out.println("Oolong Tea Header Color = " + color); 	
+		String font_size = passionTeaMenuPage.verifyOolongTeaHeaderStyle().get(1);
+		System.out.println("Oolong Tea Header font size = " +font_size);
+		String font_family = passionTeaMenuPage.verifyOolongTeaHeaderStyle().get(2);
+		System.out.println("Oolong Tea Header font family = " +font_family);
+		String header_text = passionTeaMenuPage.verifyOolongTeaHeaderStyle().get(3);
+		System.out.println("Oolong Tea Header Text = " + header_text);
+		
+		//String style = passionTeaMenuPage.verifyHeaderSectionStyle().get(5);
+		//System.out.println("Header style = " +style);
+	}
+	
+	@Test
+	public void verifyHeader() {
+		String color = passionTeaMenuPage.verifyHeaderStyle().get(0);
+		System.out.println("Menu Color = " + color); 	
+		String font_size = passionTeaMenuPage.verifyHeaderStyle().get(1);
+		System.out.println("Menu font size = " +font_size);
+		String font_family = passionTeaMenuPage.verifyHeaderStyle().get(2);
+		System.out.println("Menu font family = " +font_family);
+		String header_text = passionTeaMenuPage.verifyHeaderStyle().get(3);
+		System.out.println("Menu Text = " + header_text);
+		
+		//String style = passionTeaMenuPage.verifyHeaderSectionStyle().get(5);
+		//System.out.println("Header style = " +style);
 	}
 	
 }

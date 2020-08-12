@@ -5,7 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.AssertJUnit;
 import resources.FrameworkBase;
-import pageObjects.GreenCartHomePage;
+import pageObjects.greencart.GreenCartHomePage;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
