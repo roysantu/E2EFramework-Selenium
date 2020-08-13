@@ -36,12 +36,11 @@ public class PHPTravelsTest extends FrameworkBase {
 	}
 	
 	@Test
-	public void verifyFlightTabOpen() {
+	public void verifyFlightBooking() {
 		PHPTravelsHomePage.goToFlightTab();
 		System.out.println("Flight Tab is accessable");
 		
-		PHPTravelsHomePage.inputinFromLocation();
-		System.out.println("Origin is Kol");
+		PHPTravelsHomePage.inputinFromLocation("Kol","CCU");
 	}
 	
 	}

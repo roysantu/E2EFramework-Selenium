@@ -1,14 +1,12 @@
 package pageObjects.PHPTravels;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import resources.FrameworkBase;
 
@@ -25,10 +23,14 @@ import resources.FrameworkBase;
 		WebElement fromTextBox;
 		
 		@FindAll({
-		@FindBy(className = "select2-results")
+		@FindBy(css = "ul.select2-results li")
 		})
-		public List<WebElement> FromKOLSearchList;
+		public List<WebElement> FromSearchList;
 		
+		@FindBy(css = "ul.select2-results li div span")
+		WebElement firstSearchElement;
+		
+		//for adult,child & infant field create a single list of + & - buttons and then use index to add count for a particular field
 		
 		// Constructor
 		public PHPTravelsHomePage() {
@@ -36,6 +38,7 @@ import resources.FrameworkBase;
 		}
 		
 		public void goToFlightTab() {	
+			//Generalize this code for all the tabs
 		
 			flightMenuTab.click();
 			
@@ -47,21 +50,24 @@ import resources.FrameworkBase;
 			
 		}
 		
-		public void inputinFromLocation(){
-			fromTextBox.sendKeys("Kol");
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		public void inputinFromLocation(String org, String expectedLoc){
+			int elemIndex = 0;
 			
-			java.util.Iterator<WebElement> i = FromKOLSearchList.iterator();
-			while(i.hasNext()) {
-			    WebElement loc = i.next();
-			    String Origin = loc.getText();
-			    System.out.println(Origin);
-			    
-			    if (Origin.equalsIgnoreCase("Kolkata (CCU)")) {
-		        loc.click();
-		        System.out.println("Kolkata Selected");
+			fromTextBox.sendKeys(org);
+			
+			WebDriverWait wait = new WebDriverWait(driver, 5000);
+			wait.until(ExpectedConditions.visibilityOf(firstSearchElement));
+			
+			for(int i=0; i<FromSearchList.size(); i++) {
+			System.out.println(FromSearchList.get(i).getText());	
+						
+			if (FromSearchList.get(i).getText().contains(expectedLoc)) {
+				elemIndex = i;	}
+			}
+			
+			FromSearchList.get(elemIndex).click();
+	        System.out.println("Expected Origin Selected");
 		}
 		
 		}
-		}}
 
