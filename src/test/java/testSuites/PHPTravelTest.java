@@ -1,5 +1,7 @@
 package testSuites;
 
+import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -33,10 +35,21 @@ public class PHPTravelTest  extends FrameworkBase{
 		driver.quit();
 	}
 	
-	@Test
+	@Test(enabled=false)
 	public void verifyHeaderSection() {
 		AssertJUnit.assertTrue(phpTravelPage.verifyFlightLinkExists());
 		
+	}
+	
+	@Test(enabled=true)
+	public void verifyDatePickerInFlightTab() {
+		phpTravelPage.navigateToFlightTab();
+//		phpTravelPage.verifyDatePickerFieldDefaultState();
+		
+		phpTravelPage.datePickerField.click();
+		phpTravelPage.activeDatepickerCalenderDays.isDisplayed();
+		String currentDate = phpTravelPage.activeDatepickerCalenderDays.findElement(By.cssSelector("div.datepicker--cells-days div.datepicker--cell.-current-")).getAttribute("data-date");
+		Assert.assertEquals(currentDate, "2", "Current Date matched");
 	}
 	
 
