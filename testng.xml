@@ -3,8 +3,6 @@
 <suite name="Suite">
   <test thread-count="1" name="Test">
     <classes>
-      <class name="testSuites.GreenCartHomeTest"/>
-      <class name="testSuites.PassionTeaMenuTest"/>
       <class name="testSuites.PHPTravelsTest"/>
     </classes>
   </test> <!-- Test -->

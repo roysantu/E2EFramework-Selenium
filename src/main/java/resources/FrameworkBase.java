@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class FrameworkBase {
 	
@@ -38,8 +39,8 @@ public class FrameworkBase {
 			driver = new ChromeDriver();
 			
 		} else if(browserName.equals("firefox")) {
-			System.setProperty("webdriver.chrome.driver", prop.getProperty("geckoDriverPath"));
-			driver = new ChromeDriver();
+			System.setProperty("webdriver.gecko.driver", prop.getProperty("geckoDriverPath"));
+			driver = new FirefoxDriver();
 			
 		} else if(browserName.equals("safari")) {
 			System.setProperty("webdriver.chrome.driver", prop.getProperty("safariDriverPath"));
